@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0"/>
+<title>Nessie's Life</title>
+<link id="apple-touch-icon" rel="apple-touch-icon" href=""/>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<meta name="apple-mobile-web-app-title" content="Nessie's Life"/>
+<script>
+(function(){
+  var c = document.createElement('canvas');
+  c.width = c.height = 180;
+  var ctx = c.getContext('2d');
+  ctx.fillStyle = '#faf7f4';
+  ctx.beginPath();
+  ctx.roundRect(0, 0, 180, 180, 36);
+  ctx.fill();
+  ctx.font = '120px serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.fillText('🌿', 90, 95);
+  document.getElementById('apple-touch-icon').href = c.toDataURL('image/png');
+})();
+</script>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Nunito:wght@300;400;500&display=swap" rel="stylesheet"/>
+<style>
+  :root {
+    color-scheme: light;
+    --bg:        #faf7f4;
+    --bg2:       #f4eeea;
+    --bg3:       #ece4de;
+    --card:      #ffffff;
+    --card2:     #fdf8f5;
+    --border:    rgba(140,180,170,0.35);
+    --border2:   rgba(140,180,170,0.18);
+    --teal:      #5a9e90;
+    --teal2:     #7bbcb0;
+    --teal-dim:  rgba(90,158,144,0.25);
+    --rose:      #c87090;
+    --rose2:     #e090a8;
+    --rose-dim:  rgba(200,112,144,0.25);
+    --blush:     #d4899a;
+    --sage:      #8aac98;
+    --text:      #2d2420;
+    --text2:     #7a6258;
+    --text3:     #b09888;
+    --font-d:    'Libre Baskerville', Georgia, serif;
+    --font-b:    'Nunito', system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100%; background: var(--bg); color: var(--text); font-family: var(--font-b); font-size: 15px; color-scheme: light; }
+  body::before { content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 0;
+    background-image: radial-gradient(circle, rgba(90,158,144,0.08) 1.5px, transparent 1.5px);
+    background-size: 24px 24px; }
+  ::-webkit-scrollbar { width: 3px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--teal-dim); border-radius: 2px; }
+  #app { max-width: 480px; margin: 0 auto; min-height: 100vh; position: relative; padding-bottom: 72px; z-index: 1; }
+  header { background: linear-gradient(180deg, #f0ebe5 0%, var(--bg2) 100%); border-bottom: 1px solid var(--border); padding: 14px 16px 10px; text-align: center; position: sticky; top: 0; z-index: 100; }
+  header h1 { font-family: var(--font-d); font-size: 24px; font-style: italic; font-weight: 400; color: var(--teal); letter-spacing: 0.02em; }
+  header h1::before { content: '✦ '; font-size: 14px; font-style: normal; color: var(--rose); }
+  header p { font-size: 9px; color: var(--text3); letter-spacing: 0.18em; text-transform: uppercase; margin-top: 3px; }
+  nav { position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 100%; max-width: 480px; background: var(--card); border-top: 1px solid var(--border); display: flex; z-index: 200; box-shadow: 0 -4px 20px rgba(90,158,144,0.08); }
+  nav button { flex: 1; display: flex; flex-direction: column; align-items: center; padding: 8px 2px 6px; background: none; border: none; cursor: pointer; color: var(--text3); font-family: var(--font-b); transition: color 0.2s; }
+  nav button .icon { font-size: 16px; }
+  nav button .lbl { font-size: 9px; margin-top: 2px; letter-spacing: 0.03em; font-weight: 400; }
+  nav button.active { color: var(--teal); border-top: 2px solid var(--teal); }
+  main { padding: 12px 12px 16px; }
+  .col { display: flex; flex-direction: column; gap: 10px; }
+  .card { background: var(--card); border-radius: 16px; padding: 13px 14px; border: 1px solid var(--border2); box-shadow: 0 2px 12px rgba(90,158,144,0.08); }
+  .card-title { font-family: var(--font-d); font-size: 13px; font-style: italic; color: var(--teal); margin-bottom: 10px; padding-bottom: 8px; border-bottom: 1px solid var(--border2); }
+  input, textarea, select { background: var(--bg2); border: 1.5px solid var(--border2); border-radius: 10px; padding: 9px 12px; font-family: var(--font-b); font-size: 14px; color: var(--text); outline: none; width: 100%; transition: border-color 0.2s; font-weight: 300; }
+  input:focus, textarea:focus, select:focus { border-color: var(--teal); }
+  input::placeholder, textarea::placeholder { color: var(--text3); }
+  textarea { resize: vertical; }
+  select option { background: var(--card); }
+  .btn { background: var(--teal); color: #fff; border: none; border-radius: 10px; padding: 9px 17px; font-family: var(--font-b); font-size: 13px; font-weight: 500; cursor: pointer; white-space: nowrap; transition: background 0.2s; }
+  .btn:hover { background: var(--teal2); }
+  .btn-outline { background: none; color: var(--teal); border: 1.5px solid var(--teal-dim); border-radius: 10px; padding: 8px 15px; font-family: var(--font-b); font-size: 13px; cursor: pointer; }
+  .btn-ghost { background: none; border: none; cursor: pointer; color: var(--text2); font-family: var(--font-b); font-size: 13px; padding: 4px 6px; }
+  .btn-sm { padding: 6px 13px; font-size: 12px; border-radius: 9px; }
+  .btn-full { width: 100%; }
+  .icon-btn { background: none; border: none; cursor: pointer; color: var(--text3); font-size: 14px; padding: 3px 4px; transition: color 0.15s; }
+  .icon-btn:hover { color: var(--teal); }
+  .sub-nav { display: flex; background: var(--bg3); border-radius: 12px; padding: 3px; gap: 2px; border: 1px solid var(--border2); }
+  .sub-tab { flex: 1; padding: 7px 4px; background: none; border: none; cursor: pointer; border-radius: 9px; font-size: 12px; color: var(--text3); font-family: var(--font-b); transition: all 0.2s; }
+  .sub-tab.active { background: var(--card); color: var(--teal); box-shadow: 0 1px 4px rgba(90,158,144,0.12); }
+  .pill { background: var(--bg3); border: 1px solid var(--border2); border-radius: 20px; padding: 4px 12px; font-size: 12px; cursor: pointer; font-family: var(--font-b); color: var(--text2); transition: all 0.18s; display: inline-block; }
+  .pill.active { background: var(--teal); color: #fff; border-color: var(--teal); }
+  .pill-wrap { display: flex; gap: 6px; flex-wrap: wrap; }
+  #toast { position: fixed; top: 74px; left: 50%; transform: translateX(-50%) translateY(-8px); background: var(--teal); color: #fff; border: none; padding: 9px 20px; border-radius: 40px; font-size: 13px; z-index: 999; opacity: 0; transition: all 0.3s; pointer-events: none; white-space: nowrap; font-family: var(--font-d); font-style: italic; }
+  #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  .modal-bg { position: fixed; inset: 0; background: rgba(40,30,25,0.60); z-index: 500; display: flex; align-items: flex-end; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.25s; }
+  .modal-bg.open { opacity: 1; pointer-events: all; }
+  .modal { background: var(--card); border-radius: 22px 22px 0 0; border-top: 1px solid var(--border); padding: 20px 16px 36px; width: 100%; max-width: 480px; max-height: 90vh; overflow-y: auto; transform: translateY(30px); transition: transform 0.25s; }
+  .modal-bg.open .modal { transform: translateY(0); }
+  .modal-handle { width: 36px; height: 3px; background: var(--border); border-radius: 2px; margin: 0 auto 18px; }
+  .modal-title { font-family: var(--font-d); font-size: 20px; font-style: italic; color: var(--teal); margin-bottom: 18px; }
+  .form-row { margin-bottom: 13px; }
+  .form-label { display: block; font-size: 10px; color: var(--text3); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 5px; font-weight: 500; }
+  .empty { text-align: center; padding: 36px 16px; }
+  .empty .empty-icon { font-size: 34px; margin-bottom: 10px; opacity: 0.45; }
+  .empty p { font-size: 13px; font-style: italic; font-family: var(--font-d); color: var(--text3); line-height: 1.6; }
+  .divider { height: 1px; background: var(--border2); margin: 10px 0; }
+  .detail-view { display: none; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: var(--bg); z-index: 150; overflow: hidden; flex-direction: column; }
+  .detail-view.open { display: flex; }
+  .detail-header { background: var(--card); border-bottom: 1px solid var(--border); padding: 12px 16px; display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+  .detail-back { background: none; border: none; cursor: pointer; color: var(--teal); font-size: 20px; padding: 2px 4px; }
+  .detail-title { font-family: var(--font-d); font-size: 17px; font-style: italic; color: var(--text); flex: 1; }
+  .detail-body { padding: 14px 14px 32px; overflow-y: auto; flex: 1; }
+  .check-row { display: flex; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border2); }
+  .check-box { width: 20px; min-width: 20px; height: 20px; border-radius: 5px; border: 1.5px solid var(--text3); background: none; cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 11px; color: transparent; transition: all 0.15s; }
+  .check-box.done { background: var(--teal); border-color: var(--teal); color: #fff; }
+  .star-rating { display: flex; gap: 4px; }
+  .star-rating button { background: none; border: none; cursor: pointer; font-size: 20px; color: var(--text3); padding: 0; }
+  .star-rating button.lit { color: var(--rose); }
+  .stars { color: var(--rose); font-size: 12px; letter-spacing: 2px; }
+  .prog-bar { height: 3px; background: var(--bg3); border-radius: 99px; overflow: hidden; }
+  .prog-fill { height: 100%; background: linear-gradient(90deg, var(--teal), var(--teal2)); border-radius: 99px; transition: width 0.4s; }
+  .goal-card { background: var(--card); border-radius: 14px; border: 1px solid var(--border2); padding: 13px 14px; cursor: pointer; transition: border-color 0.2s; }
+  .goal-card:hover { border-color: var(--teal-dim); }
+  .challenge-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 5px; }
+  .day-cell { aspect-ratio: 1; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 11px; cursor: pointer; border: 1px solid var(--border2); background: var(--bg3); color: var(--text3); transition: all 0.15s; user-select: none; }
+  .day-cell.done { background: var(--teal); color: #fff; border-color: var(--teal); font-weight: 600; box-shadow: 0 0 8px rgba(90,158,144,0.35); }
+  .day-cell.today-cell { border-color: var(--teal); color: var(--text); }
+  .day-cell.future { opacity: 0.22; cursor: default; }
+  .manifest-card { background: linear-gradient(135deg, rgba(90,158,144,0.08), var(--card)); border-radius: 16px; border: 1px solid rgba(90,158,144,0.18); padding: 15px 14px; position: relative; }
+  .manifest-card::before { content: '\275D'; position: absolute; top: 10px; left: 12px; font-size: 28px; color: rgba(90,158,144,0.18); font-family: Georgia; line-height: 1; pointer-events: none; }
+  .manifest-text { font-family: var(--font-d); font-size: 15px; font-style: italic; color: var(--text); line-height: 1.65; margin-bottom: 10px; padding-left: 8px; }
+  .cat-personal { background: rgba(200,112,144,0.15); color: var(--rose); }
+  .cat-health   { background: rgba(90,158,144,0.15); color: var(--teal); }
+  .cat-creative { background: rgba(138,172,152,0.18); color: var(--sage); }
+  .cat-career   { background: rgba(180,140,100,0.15); color: #b08060; }
+  .row { display: flex; gap: 8px; align-items: center; }
+  .flex-between { display: flex; justify-content: space-between; align-items: center; }
+  .mt4 { margin-top: 4px; } .mt8 { margin-top: 8px; } .mt12 { margin-top: 12px; }
+  .note-text { font-size: 13px; color: var(--text2); font-style: italic; line-height: 1.6; font-family: var(--font-d); }
+  .section-label { font-size: 10px; color: var(--text3); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 6px; font-weight: 500; }
+  a.link { color: var(--teal); font-size: 13px; word-break: break-all; text-decoration: none; border-bottom: 1px solid var(--teal-dim); }
+
+  .goal-cat { display: inline-block; font-size: 10px; padding: 2px 9px; border-radius: 20px; letter-spacing: 0.05em; text-transform: uppercase; font-weight: 500; }
+  .goal-complete { opacity: 0.6; }
+  .manifest-cat { font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; }
+</style>
+</head>
+<body>
+<div id="app">
+  <div id="toast"></div>
+  <header>
+    <h1>Nessie's Life</h1>
+    <p id="header-sub">goals &middot; growth &middot; dreams</p>
+  </header>
+  <main id="main-content">
+    <div id="tab-today"    class="tab-panel"></div>
+    <div id="tab-goals"    class="tab-panel" style="display:none"></div>
+    <div id="tab-30day"    class="tab-panel" style="display:none"></div>
+    <div id="tab-manifest" class="tab-panel" style="display:none"></div>
+    <div id="tab-settings" class="tab-panel" style="display:none"></div>
+  </main>
+  <nav>
+    <button class="active" data-tab="today"    onclick="switchTab('today')"><span class="icon">✨</span><span class="lbl">Today</span></button>
+    <button data-tab="goals"    onclick="switchTab('goals')"><span class="icon">🎯</span><span class="lbl">Goals</span></button>
+    <button data-tab="30day"    onclick="switchTab('30day')"><span class="icon">🔥</span><span class="lbl">30 Days</span></button>
+    <button data-tab="manifest" onclick="switchTab('manifest')"><span class="icon">🌙</span><span class="lbl">Manifest</span></button>
+    <button data-tab="settings" onclick="switchTab('settings')"><span class="icon">⚙️</span><span class="lbl">Settings</span></button>
+  </nav>
+</div>
+
+<div id="detail-goal" class="detail-view">
+  <div class="detail-header">
+    <button class="detail-back" onclick="closeDetail('goal')">←</button>
+    <span class="detail-title" id="detail-goal-title"></span>
+    <button class="icon-btn" onclick="editCurrentGoal()">✏️</button>
+    <button class="icon-btn" onclick="deleteCurrentGoal()" style="color:var(--rose)">🗑️</button>
+  </div>
+  <div class="detail-body" id="detail-goal-body"></div>
+</div>
+
+<div id="modal-bg" class="modal-bg" onclick="closeModal(event)">
+  <div class="modal"><div class="modal-handle"></div><div id="modal-content"></div></div>
+</div>
+
+<script>
+const DB = {
+  async get(k, fb) {
+    try {
+      if (window.storage) { const r = await window.storage.get(k); return r ? JSON.parse(r.value) : fb; }
+    } catch {}
+    try { const v = localStorage.getItem('nl_' + k); return v ? JSON.parse(v) : fb; } catch { return fb; }
+  },
+  async set(k, v) {
+    try {
+      if (window.storage) { await window.storage.set(k, JSON.stringify(v)); return; }
+    } catch {}
+    try {
+      localStorage.setItem('nl_' + k, JSON.stringify(v));
+      let total = 0;
+      for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        if (key && key.startsWith('nl_')) total += (localStorage.getItem(key)||'').length;
+      }
+      if (total > 4 * 1024 * 1024) DB._showStorageWarning();
+    } catch(e) {
+      if (e.name === 'QuotaExceededError') DB._showStorageWarning(true);
+    }
+  },
+  _warnShown: false,
+  _showStorageWarning(full=false) {
+    if (DB._warnShown) return; DB._warnShown = true;
+    const msg = full ? '⚠️ Storage is full! Export a backup from Settings.' : '⚠️ Storage nearly full — export a backup soon.';
+    const el = document.getElementById('toast');
+    if (el) { el.textContent = msg; el.classList.add('show'); el.style.background = '#c04040'; setTimeout(() => { el.classList.remove('show'); el.style.background = ''; }, 5000); }
+  }
+};
+
+const state = {};
+let currentTab = 'today';
+let currentGoalId = null;
+
+async function init() {
+  state.goals      = await DB.get('goals', []);
+  state.challenges = await DB.get('challenges', {});
+  state.manifest   = await DB.get('manifest', []);
+  // migrate old single activeChallenge -> activeChallenges array
+  const legacy = await DB.get('activeChallenge', null);
+  const saved  = await DB.get('activeChallenges', null);
+  if (saved) { state.activeChallenges = saved; }
+  else if (legacy) { state.activeChallenges = [legacy.id]; await DB.set('activeChallenges', state.activeChallenges); }
+  else { state.activeChallenges = []; }
+  renderAll();
+}
+function renderAll() { renderToday(); renderGoals(); render30Day(); renderManifest(); }
+
+function toast(msg) {
+  const el = document.getElementById('toast');
+  el.textContent = msg; el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 2400);
+}
+function switchTab(tab) {
+  currentTab = tab;
+  document.querySelectorAll('.tab-panel').forEach(p => p.style.display = 'none');
+  document.getElementById('tab-' + tab).style.display = 'block';
+  document.querySelectorAll('nav button').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+  if (tab === 'today') renderToday();
+}
+function openModal(html) {
+  document.getElementById('modal-content').innerHTML = html;
+  document.getElementById('modal-bg').classList.add('open');
+}
+function closeModal(e) {
+  if (!e || e.target === document.getElementById('modal-bg'))
+    document.getElementById('modal-bg').classList.remove('open');
+}
+let _pendingDelete = null;
+function confirmDelete(msg, fn) {
+  _pendingDelete = fn;
+  openModal(`<div style="text-align:center;padding:8px 0 4px">
+    <div style="font-size:28px;margin-bottom:12px">🗑️</div>
+    <div style="font-family:var(--font-d);font-size:17px;font-style:italic;color:var(--text);margin-bottom:8px">Are you sure?</div>
+    <div style="font-size:13px;color:var(--text2);margin-bottom:24px">${msg}</div>
+    <div style="display:flex;gap:10px">
+      <button class="btn-outline btn-full" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-full" style="background:var(--rose)" onclick="executePendingDelete()">Delete</button>
+    </div></div>`);
+}
+function executePendingDelete() { if (_pendingDelete) { _pendingDelete(); _pendingDelete = null; } closeModal(); }
+function closeDetail(type) { document.getElementById('detail-' + type).classList.remove('open'); }
+function setStars(n, id) {
+  const el = document.getElementById(id); el.dataset.rating = n;
+  el.querySelectorAll('button').forEach((b, i) => { b.classList.toggle('lit', i < n); b.textContent = i < n ? '★' : '☆'; });
+}
+function selectEmoji(e, btn) {
+  btn.closest('.pill-wrap').querySelectorAll('.pill').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active'); btn.closest('.pill-wrap').dataset.selected = e;
+}
+
+function todayStr() { return new Date().toISOString().slice(0,10); }
+function daysUntil(dateStr) {
+  if (!dateStr) return null;
+  return Math.ceil((new Date(dateStr+'T12:00:00') - new Date(todayStr()+'T12:00:00')) / 86400000);
+}
+
+const QUOTES = [
+  ["She remembered who she was and the game changed.", "Lalah Delia"],
+  ["You are enough. A thousand times enough.", "unknown"],
+  ["Do it with passion or not at all.", "Rosa Nouchette Carey"],
+  ["She was unstoppable — not because she never had doubts, but because she kept going.", "Beau Taplin"],
+  ["The most powerful thing you can do is become the person you needed.", "unknown"],
+  ["Darling, you are a wildfire. Stop apologising for the heat.", "unknown"],
+  ["One day or day one. You decide.", "unknown"],
+  ["You didn't come this far to only come this far.", "unknown"],
+  ["Be the energy you want to attract.", "unknown"],
+  ["She was chaos and beauty intertwined.", "unknown"],
+  ["The woman you are becoming will cost you people, habits, and comfort. Pay the price.", "unknown"],
+  ["Stop waiting for Friday, for summer, for someone. Happiness is achieved when you stop waiting.", "unknown"],
+  ["You are not a drop in the ocean. You are the entire ocean in a drop.", "Rumi"],
+  ["Make yourself a priority.", "unknown"],
+  ["Do something today your future self will thank you for.", "unknown"],
+  ["You've survived 100% of your worst days. That's a perfect record.", "unknown"],
+  ["Act as if what you do makes a difference. It does.", "William James"],
+  ["She believed she could, so she did.", "R.S. Grey"],
+  ["The secret is to start.", "unknown"],
+  ["Your only limit is your mind.", "unknown"],
+  ["Everything you want is on the other side of fear.", "Jack Canfield"],
+  ["Be a girl with a mind, a woman with attitude, a lady with class.", "unknown"],
+  ["You are the protagonist of your own story. Start acting like it.", "unknown"],
+  ["Don't wait for the storm to pass. Learn to dance in the rain.", "Vivian Greene"],
+  ["You were not born to just pay bills and die. Create. Dream. Live.", "unknown"],
+  ["Consistency is more important than perfection.", "unknown"],
+  ["The harder you work, the luckier you get.", "Gary Player"],
+  ["Build the life you want, then live it.", "unknown"],
+  ["Small steps every day lead to big results.", "unknown"],
+  ["You are your only competition.", "unknown"],
+  ["Success is not given. It is earned.", "unknown"],
+  ["She made broken look beautiful and strong look invincible.", "Ariana Dancu"],
+  ["I am not afraid of storms, for I am learning how to sail my ship.", "Louisa May Alcott"],
+  ["A strong woman looks a challenge dead in the eye and gives it a wink.", "Gina Carey"],
+  ["The question isn't who is going to let me — it's who is going to stop me.", "Ayn Rand"],
+];
+
+// ══════════════════════════════════════════════════════════════════════════════
+// TODAY DASHBOARD
+// ══════════════════════════════════════════════════════════════════════════════
+function renderToday() {
+  const el = document.getElementById('tab-today');
+  const today = todayStr();
+  const now = new Date();
+  const hour = now.getHours();
+  const greetings = hour < 12 ? ['Good morning ☀️','Rise and shine ✨','Morning, love 🌅']
+    : hour < 17 ? ['Good afternoon 🌿','Keep going 💪','You\'re doing great ✦']
+    : ['Good evening 🌙','Wind down gently 🕯️','Evening, queen 👑'];
+  const greeting = greetings[now.getDate() % greetings.length];
+
+  // Active challenges check-in (multi)
+  const activeChs = (state.activeChallenges||[]).map(id => state.challenges[id]).filter(Boolean);
+
+  // Goals due soon or overdue
+  const urgentGoals = state.goals.filter(g => !g.archived && g.deadline).map(g => ({...g, daysLeft: daysUntil(g.deadline)}))
+    .filter(g => g.daysLeft !== null && g.daysLeft <= 7).sort((a,b) => a.daysLeft - b.daysLeft);
+
+  // Active goals with next incomplete step
+  const activeGoals = state.goals.filter(g => !g.archived && g.steps?.length > 0 && g.steps.some(s => !s.done));
+
+  // Random affirmation
+  const todayManifest = state.manifest.length > 0
+    ? state.manifest[now.getDate() % state.manifest.length] : null;
+
+  let html = `<div class="col">
+    <div style="padding:6px 2px 0">
+      <div style="font-family:var(--font-d);font-size:22px;font-style:italic;color:var(--text)">${greeting}</div>
+      <div style="font-size:11px;color:var(--text3);margin-top:3px">${now.toLocaleDateString('en-GB',{weekday:'long',day:'numeric',month:'long'})}</div>
+    </div>`;
+
+  // ── Daily quote ──
+  const q = QUOTES[(now.getDate() + now.getMonth() * 7) % QUOTES.length];
+  html += `<div style="border-left:2px solid var(--rose);padding:10px 14px;background:rgba(90,158,144,0.15);border-radius:0 10px 10px 0">
+    <div style="font-family:var(--font-d);font-size:14px;font-style:italic;color:var(--text);line-height:1.65;margin-bottom:5px">&ldquo;${q[0]}&rdquo;</div>
+    ${q[1]!=='unknown' ? `<div style="font-size:10px;color:var(--text3);letter-spacing:.08em;text-transform:uppercase">&mdash; ${q[1]}</div>` : ''}
+  </div>`;
+
+  // ── Challenge check-ins ──
+  activeChs.forEach(ch => {
+    const startDate = new Date(ch.startDate+'T12:00:00');
+    const dayNum = Math.floor((new Date(today+'T12:00:00') - startDate) / 86400000);
+    if (dayNum < 0 || dayNum >= 30) return;
+    const doneDays = Object.values(ch.days||{}).filter(Boolean).length;
+    const todayDone = !!(ch.days?.[today]);
+    const streak = calcChallengeStreak(ch.days||{}, ch.startDate);
+    html += `<div class="card" style="border-color:${todayDone?'var(--teal)':'var(--border)'};background:${todayDone?'var(--card2)':'var(--card)'}">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:8px">
+        <div>
+          <div style="font-family:var(--font-d);font-size:14px;font-style:italic;color:var(--text)">${ch.name}</div>
+          <div style="font-size:11px;color:var(--text3);margin-top:2px">Day ${dayNum+1} of 30 · ${doneDays} done · 🔥 ${streak}</div>
+        </div>
+        <span style="font-size:11px;color:var(--text3)">${doneDays}/30</span>
+      </div>
+      <div class="prog-bar" style="height:4px;margin-bottom:10px"><div class="prog-fill" style="width:${Math.round(doneDays/30*100)}%"></div></div>
+      ${todayDone
+        ? `<div style="text-align:center;padding:3px 0;font-family:var(--font-d);font-size:13px;font-style:italic;color:var(--teal)">✓ Done for today 🖤</div>`
+        : `<button class="btn btn-full" style="padding:11px" onclick="quickCheckChallenge('${ch.id}')">✓ Mark today done</button>`}
+    </div>`;
+  });
+
+  // ── Urgent goals ──
+  if (urgentGoals.length > 0) {
+    html += `<div class="card" style="border-color:rgba(90,158,144,0.35)">
+      <div class="card-title" style="color:var(--teal)">⚠️ Needs attention</div>`;
+    urgentGoals.forEach(g => {
+      const d = g.daysLeft;
+      const urgency = d < 0 ? `<span style="color:var(--rose);font-weight:500">Overdue by ${Math.abs(d)} day${Math.abs(d)!==1?'s':''}</span>`
+        : d === 0 ? `<span style="color:var(--rose);font-weight:500">Due today</span>`
+        : `<span style="color:var(--teal)">Due in ${d} day${d!==1?'s':''}</span>`;
+      const stepsLeft = (g.steps||[]).filter(s=>!s.done).length;
+      html += `<div style="padding:8px 0;border-bottom:1px solid var(--border2);cursor:pointer" onclick="openGoal('${g.id}')">
+        <div style="font-size:14px;color:var(--text);margin-bottom:3px">${g.title}</div>
+        <div style="display:flex;gap:10px;align-items:center;font-size:11px">
+          ${urgency}
+          ${stepsLeft ? `<span style="color:var(--text3)">${stepsLeft} step${stepsLeft!==1?'s':''} left</span>` : ''}
+        </div>
+      </div>`;
+    });
+    html += `</div>`;
+  }
+
+  // ── Next steps from active goals ──
+  if (activeGoals.length > 0) {
+    html += `<div class="card"><div class="card-title">🎯 Next steps</div>`;
+    activeGoals.slice(0, 4).forEach(g => {
+      const nextStep = g.steps.find(s => !s.done);
+      const stepIdx = g.steps.indexOf(nextStep);
+      const doneCount = g.steps.filter(s=>s.done).length;
+      html += `<div style="padding:9px 0;border-bottom:1px solid var(--border2)">
+        <div style="font-size:11px;color:var(--text3);margin-bottom:5px">${g.title} · ${doneCount}/${g.steps.length}</div>
+        <div style="display:flex;align-items:center;gap:10px">
+          <button class="check-box" onclick="quickToggleStep('${g.id}',${stepIdx},this)" style="flex-shrink:0"></button>
+          <span style="font-size:14px;color:var(--text)">${nextStep.text}</span>
+        </div>
+      </div>`;
+    });
+    html += `</div>`;
+  }
+
+  // ── Today's affirmation ──
+  if (todayManifest) {
+    html += `<div class="manifest-card">
+      <div class="manifest-text" style="font-size:14px;margin-bottom:6px">${todayManifest.affirmation}</div>
+      <div style="font-size:10px;color:var(--text3);letter-spacing:.1em;text-transform:uppercase">${todayManifest.category}</div>
+    </div>`;
+  }
+
+  // ── Quick links ──
+  html += `<div style="display:grid;grid-template-columns:1fr 1fr;gap:8px">
+    <button class="card" style="text-align:center;cursor:pointer;border:none;padding:14px 8px" onclick="switchTab('goals');openAddGoal()">
+      <div style="font-size:22px;margin-bottom:4px">🎯</div>
+      <div style="font-size:12px;color:var(--text2)">New goal</div>
+    </button>
+    <button class="card" style="text-align:center;cursor:pointer;border:none;padding:14px 8px" onclick="switchTab('manifest');openAddManifest()">
+      <div style="font-size:22px;margin-bottom:4px">🌙</div>
+      <div style="font-size:12px;color:var(--text2)">Write desire</div>
+    </button>
+    ${!activeChs.length ? `<button class="card" style="text-align:center;cursor:pointer;border:none;padding:14px 8px" onclick="switchTab('30day');openNewChallenge()">
+      <div style="font-size:22px;margin-bottom:4px">🔥</div>
+      <div style="font-size:12px;color:var(--text2)">Start challenge</div>
+    </button>` : ''}
+    <button class="card" style="text-align:center;cursor:pointer;border:none;padding:14px 8px" onclick="switchTab('goals')">
+      <div style="font-size:22px;margin-bottom:4px">📋</div>
+      <div style="font-size:12px;color:var(--text2)">All goals</div>
+    </button>
+  </div>`;
+
+  // ── Empty state if nothing going on ──
+  if (!activeChs.length && urgentGoals.length === 0 && activeGoals.length === 0 && !todayManifest) {
+    html += `<div class="empty"><div class="empty-icon">🖤</div>
+      <p>Everything is quiet.<br>A good day to set a new intention.</p></div>`;
+  }
+
+  html += `</div>`;
+  el.innerHTML = html;
+}
+
+function quickCheckChallenge(id) {
+  const today = todayStr();
+  if (!state.challenges[id]) return;
+  state.challenges[id].days = state.challenges[id].days || {};
+  state.challenges[id].days[today] = true;
+  DB.set('challenges', state.challenges);
+  const streak = calcChallengeStreak(state.challenges[id].days, state.challenges[id].startDate);
+  const msgs = streak >= 7 ? `🔥 ${streak} day streak! Unstoppable.` : streak >= 3 ? `🔥 ${streak} days in a row!` : '✓ Done! Keep it up ✦';
+  toast(msgs);
+  renderToday(); render30Day();
+}
+
+function quickToggleStep(goalId, idx, btn) {
+  const goal = state.goals.find(g => g.id === goalId);
+  if (!goal) return;
+  goal.steps[idx].done = !goal.steps[idx].done;
+  const done = goal.steps[idx].done;
+  btn.classList.toggle('done', done);
+  btn.textContent = done ? '✓' : '';
+  DB.set('goals', state.goals);
+  if (done) {
+    const left = goal.steps.filter(s=>!s.done).length;
+    toast(left === 0 ? `🎉 All steps done! ${goal.celebrate||''}` : `Step done ✦ ${left} left`);
+  }
+  setTimeout(() => renderToday(), 300);
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// GOALS
+// ══════════════════════════════════════════════════════════════════════════════
+const GOAL_CATS = ['Personal','Health','Creative','Career'];
+const GOAL_CAT_CLASS = {Personal:'cat-personal',Health:'cat-health',Creative:'cat-creative',Career:'cat-career'};
+
+function renderGoals() {
+  const el = document.getElementById('tab-goals');
+  const filter = el.dataset.filter || 'all';
+  const showArchived = el.dataset.archived === 'true';
+  let list = state.goals.filter(g => showArchived ? g.archived : !g.archived);
+  if (filter !== 'all') list = list.filter(g => g.category === filter);
+  const activeCount = state.goals.filter(g=>!g.archived).length;
+  const archivedCount = state.goals.filter(g=>g.archived).length;
+
+  let html = `<div class="col">
+    <div class="flex-between">
+      <div style="font-family:var(--font-d);font-size:20px;font-style:italic;color:var(--text)">Goal Planner</div>
+      <button class="btn btn-sm" onclick="openAddGoal()">+ Add</button>
+    </div>
+    <div class="sub-nav">
+      <button class="sub-tab ${!showArchived&&filter==='all'?'active':''}" onclick="setGoalFilter('all')">All <span style="opacity:.55;font-size:10px">${activeCount}</span></button>
+      ${GOAL_CATS.map(c=>`<button class="sub-tab ${!showArchived&&filter===c?'active':''}" onclick="setGoalFilter('${c}')">${c}</button>`).join('')}
+      ${archivedCount ? `<button class="sub-tab ${showArchived?'active':''}" onclick="toggleArchivedGoals()" title="Archived">🗂</button>` : ''}
+    </div>`;
+
+  if (list.length === 0) {
+    html += `<div class="empty"><div class="empty-icon">🎯</div>
+      <p>${showArchived ? 'No archived goals.' : 'No goals yet.<br>What do you want to create?'}</p></div>`;
+  } else {
+    list.forEach(g => {
+      const stepsDone = (g.steps||[]).filter(s=>s.done).length;
+      const stepsTotal = (g.steps||[]).length;
+      const pct = stepsTotal ? Math.round(stepsDone/stepsTotal*100) : 0;
+      const d = daysUntil(g.deadline);
+      const isComplete = stepsTotal > 0 && stepsDone === stepsTotal;
+      const urgencyColor = d !== null && d < 0 ? 'var(--rose)' : d !== null && d <= 3 ? '#c09040' : 'var(--text3)';
+      const urgencyLabel = d === null ? '' : d < 0 ? `⚠️ Overdue ${Math.abs(d)}d` : d === 0 ? '⚠️ Due today' : d <= 7 ? `🗓 ${d}d left` : `🗓 ${g.deadline}`;
+
+      html += `<div class="goal-card ${isComplete?'goal-complete':''}" onclick="openGoal('${g.id}')">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:5px">
+          <div style="font-family:var(--font-d);font-size:15px;font-style:italic;color:${isComplete?'var(--text3)':'var(--text)'};flex:1;line-height:1.3;${isComplete?'text-decoration:line-through':''}">${g.title}</div>
+          <span class="goal-cat ${GOAL_CAT_CLASS[g.category]||'cat-personal'}" style="margin-left:8px;flex-shrink:0">${g.category||'Personal'}</span>
+        </div>
+        ${urgencyLabel ? `<div style="font-size:11px;color:${urgencyColor};margin-bottom:5px">${urgencyLabel}</div>` : ''}
+        ${stepsTotal ? `
+          <div style="margin-top:4px">
+            <div class="prog-bar"><div class="prog-fill" style="width:${pct}%"></div></div>
+            <div style="font-size:10px;color:var(--text3);margin-top:3px">${stepsDone}/${stepsTotal} steps ${isComplete?'· Complete ✓':''}</div>
+          </div>` : ''}
+        ${!isComplete && g.why ? `<div class="note-text mt4" style="font-size:12px">${g.why.slice(0,80)}${g.why.length>80?'…':''}</div>` : ''}
+      </div>`;
+    });
+  }
+  html += `</div>`;
+  el.innerHTML = html;
+}
+
+function setGoalFilter(f) {
+  const el = document.getElementById('tab-goals');
+  el.dataset.filter = f; el.dataset.archived = 'false';
+  renderGoals();
+}
+function toggleArchivedGoals() {
+  const el = document.getElementById('tab-goals');
+  el.dataset.archived = el.dataset.archived === 'true' ? 'false' : 'true';
+  renderGoals();
+}
+
+function openAddGoal() { openModal(`<div class="modal-title">New Goal</div>${goalForm()}`); }
+
+function goalForm(g={}) {
+  return `
+    <div class="form-row"><label class="form-label">Goal *</label>
+      <input id="g-title" value="${g.title||''}" placeholder="What do you want to achieve?"/></div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px">
+      <div><label class="form-label">Category</label>
+        <select id="g-cat">${GOAL_CATS.map(c=>`<option ${g.category===c?'selected':''}>${c}</option>`).join('')}</select></div>
+      <div><label class="form-label">Deadline</label>
+        <input id="g-deadline" type="date" value="${g.deadline||''}"/></div>
+    </div>
+    <div class="form-row"><label class="form-label">Why does this matter?</label>
+      <textarea id="g-why" rows="2" placeholder="Your reason — this is your fuel...">${g.why||''}</textarea></div>
+    <div class="form-row"><label class="form-label">Action steps <span style="font-weight:300;text-transform:none;letter-spacing:0">(one per line — keep them small!)</span></label>
+      <textarea id="g-steps" rows="5" placeholder="Step 1&#10;Step 2&#10;...&#10;&#10;Tip: smaller steps = easier to start">${(g.steps||[]).map(s=>typeof s==='string'?s:s.text).join('\n')}</textarea></div>
+    <div class="form-row"><label class="form-label">How will I celebrate? 🎉</label>
+      <input id="g-celebrate" value="${g.celebrate||''}" placeholder="A treat, a ritual, something you love..."/></div>
+    <div style="display:flex;gap:8px;margin-top:8px">
+      <button class="btn btn-full" onclick="saveGoal(${g.id?`'${g.id}'`:'null'})">Save Goal</button>
+      ${g.id ? `<button class="btn-outline" onclick="archiveGoal('${g.id}')" title="${g.archived?'Unarchive':'Archive'}">${g.archived?'Unarchive':'Archive'}</button>` : ''}
+    </div>
+  `;
+}
+
+function saveGoal(editId) {
+  const title = document.getElementById('g-title').value.trim();
+  if (!title) { toast('Please add a goal ✦'); return; }
+  const stepLines = document.getElementById('g-steps').value.split('\n').map(s=>s.trim()).filter(Boolean);
+  let existingSteps = [];
+  if (editId) { const ex = state.goals.find(g=>g.id===editId); existingSteps = ex?.steps||[]; }
+  const steps = stepLines.map(text => {
+    const ex = existingSteps.find(s=>(typeof s==='string'?s:s.text)===text);
+    return { text, done: ex?.done||false };
+  });
+  const goal = {
+    id: editId || Date.now()+'', title,
+    category: document.getElementById('g-cat').value,
+    deadline: document.getElementById('g-deadline').value,
+    why: document.getElementById('g-why').value.trim(),
+    steps, celebrate: document.getElementById('g-celebrate').value.trim(),
+    archived: editId ? (state.goals.find(g=>g.id===editId)?.archived||false) : false,
+  };
+  if (editId) state.goals = state.goals.map(g=>g.id===editId?{...g,...goal}:g);
+  else state.goals.unshift(goal);
+  DB.set('goals', state.goals);
+  closeModal(); renderAll(); toast(editId?'Goal updated ✦':'Goal saved ✦');
+}
+
+function archiveGoal(id) {
+  state.goals = state.goals.map(g=>g.id===id?{...g,archived:!g.archived}:g);
+  DB.set('goals', state.goals);
+  closeModal(); renderGoals(); renderToday(); toast('Archived ✦');
+}
+
+function openGoal(id) {
+  const g = state.goals.find(x=>x.id===id);
+  if (!g) return;
+  currentGoalId = id;
+  document.getElementById('detail-goal-title').textContent = g.title;
+  const stepsDone = (g.steps||[]).filter(s=>s.done).length;
+  const stepsTotal = (g.steps||[]).length;
+  const pct = stepsTotal ? Math.round(stepsDone/stepsTotal*100) : 0;
+  const d = daysUntil(g.deadline);
+
+  let body = `<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;align-items:center">
+    <span class="goal-cat ${GOAL_CAT_CLASS[g.category]||'cat-personal'}">${g.category||'Personal'}</span>
+    ${g.deadline ? `<span style="font-size:12px;color:${d!==null&&d<0?'var(--rose)':d!==null&&d<=3?'#c09040':'var(--text2)'}">${d===null?'':d<0?`⚠️ Overdue by ${Math.abs(d)} days`:d===0?'⚠️ Due today':`🗓 ${d} days left`}</span>` : ''}
+    ${g.archived ? `<span style="font-size:10px;color:var(--text3);background:var(--bg3);padding:2px 8px;border-radius:10px">Archived</span>` : ''}
+  </div>`;
+
+  if (stepsTotal) {
+    body += `<div style="margin-bottom:16px">
+      <div class="flex-between" style="margin-bottom:5px">
+        <span style="font-size:11px;color:var(--text3)">Progress</span>
+        <span style="font-size:13px;color:var(--teal);font-family:var(--font-d)">${stepsDone}/${stepsTotal} · ${pct}%</span>
+      </div>
+      <div class="prog-bar" style="height:7px"><div class="prog-fill" style="width:${pct}%"></div></div>
+      ${pct===100?`<div style="font-size:12px;color:var(--teal);margin-top:6px;font-style:italic;font-family:var(--font-d)">All steps complete! ${g.celebrate?'Time to celebrate: '+g.celebrate:''} 🎉</div>`:''}
+    </div>`;
+  }
+
+  if (g.why) body += `<div class="mt8"><div class="section-label">Why it matters</div><div class="note-text">${g.why}</div></div>`;
+
+  if (g.steps?.length) {
+    body += `<div class="mt12"><div class="section-label" style="margin-bottom:8px">Steps — tap to complete</div>`;
+    g.steps.forEach((s,i) => {
+      const text = typeof s==='string'?s:s.text;
+      const done = s.done||false;
+      body += `<div class="check-row">
+        <button class="check-box ${done?'done':''}" onclick="toggleStep('${id}',${i},this)">${done?'✓':''}</button>
+        <span style="font-size:14px;text-decoration:${done?'line-through':'none'};color:${done?'var(--text3)':'var(--text)'}">${text}</span>
+      </div>`;
+    });
+    body += `</div>`;
+  }
+
+  if (g.celebrate && pct < 100) body += `<div class="mt12"><div class="section-label">Celebration waiting 🎉</div><div class="note-text">${g.celebrate}</div></div>`;
+
+  document.getElementById('detail-goal-body').innerHTML = body;
+  document.getElementById('detail-goal').classList.add('open');
+}
+
+function toggleStep(goalId, idx, btn) {
+  const goal = state.goals.find(g=>g.id===goalId);
+  if (!goal) return;
+  goal.steps[idx].done = !goal.steps[idx].done;
+  const done = goal.steps[idx].done;
+  btn.classList.toggle('done', done);
+  btn.textContent = done ? '✓' : '';
+  btn.nextElementSibling.style.textDecoration = done ? 'line-through' : 'none';
+  btn.nextElementSibling.style.color = done ? 'var(--text3)' : 'var(--text)';
+  DB.set('goals', state.goals);
+  renderGoals(); renderToday();
+  if (done) {
+    const left = goal.steps.filter(s=>!s.done).length;
+    if (left === 0) toast(`🎉 All done! ${goal.celebrate||'You earned this ✦'}`);
+    else toast(`Step done · ${left} left ✦`);
+  }
+}
+
+function editCurrentGoal() {
+  const g = state.goals.find(x=>x.id===currentGoalId);
+  if (!g) return;
+  closeDetail('goal');
+  openModal(`<div class="modal-title">Edit Goal</div>${goalForm(g)}`);
+}
+
+function deleteCurrentGoal() {
+  confirmDelete('This goal will be permanently removed.', () => {
+    state.goals = state.goals.filter(g=>g.id!==currentGoalId);
+    DB.set('goals', state.goals); closeDetail('goal'); renderGoals(); renderToday(); toast('Deleted ✦');
+  });
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// 30-DAY CHALLENGE
+// ══════════════════════════════════════════════════════════════════════════════
+function render30Day() {
+  const el = document.getElementById('tab-30day');
+  const today = todayStr();
+  const todayDate = new Date(today+'T12:00:00');
+  const active = (state.activeChallenges||[]).map(id => state.challenges[id]).filter(Boolean);
+  const allChs = Object.values(state.challenges);
+  const pastChs = allChs.filter(c => !state.activeChallenges?.includes(c.id));
+  const view = el.dataset.view || 'active';
+
+  let html = `<div class="col">
+    <div class="flex-between">
+      <div style="font-family:var(--font-d);font-size:20px;font-style:italic;color:var(--text)">30-Day Challenges</div>
+      <button class="btn btn-sm" onclick="openNewChallenge()">+ New</button>
+    </div>
+    <div class="sub-nav">
+      <button class="sub-tab ${view==='active'?'active':''}" onclick="set30View('active')">Active <span style="opacity:.55;font-size:10px">${active.length}</span></button>
+      <button class="sub-tab ${view==='history'?'active':''}" onclick="set30View('history')">History <span style="opacity:.55;font-size:10px">${pastChs.length}</span></button>
+    </div>`;
+
+  if (view === 'history') {
+    if (!pastChs.length) {
+      html += `<div class="empty"><div class="empty-icon">📜</div><p>No completed challenges yet.<br>Your history will appear here.</p></div>`;
+    } else {
+      pastChs.slice().reverse().forEach(c => {
+        const done = Object.values(c.days||{}).filter(Boolean).length;
+        const pct = Math.round(done/30*100);
+        const bestStreak = calcBestStreak(c.days||{}, c.startDate);
+        html += `<div class="card">
+          <div class="flex-between" style="margin-bottom:8px">
+            <div style="font-family:var(--font-d);font-size:15px;font-style:italic;color:var(--text)">${c.name}</div>
+            <span style="font-size:12px;color:${done>=30?'var(--red2)':'var(--text3)'}">${done}/30 ${done>=30?'✓ Complete':''}</span>
+          </div>
+          ${c.startDate ? `<div style="font-size:11px;color:var(--text3);margin-bottom:8px">Started ${c.startDate}</div>` : ''}
+          <div class="prog-bar" style="height:5px;margin-bottom:8px"><div class="prog-fill" style="width:${pct}%"></div></div>
+          <div style="display:flex;gap:16px;font-size:11px;color:var(--text3)">
+            <span>🔥 Best streak: ${bestStreak}</span>
+            <span>✅ ${done} days done</span>
+            <span>${pct}% complete</span>
+          </div>
+          ${c.description ? `<div class="note-text" style="font-size:12px;margin-top:8px;padding-top:8px;border-top:1px solid var(--border2)">${c.description}</div>` : ''}
+          <button class="btn-outline btn-full" style="margin-top:10px;font-size:12px;padding:7px" onclick="restartChallenge('${c.id}')">↺ Run this again</button>
+        </div>`;
+      });
+    }
+  } else {
+    if (!active.length) {
+      html += `<div class="empty" style="padding:28px 0">
+        <div class="empty-icon">🔥</div>
+        <p>No active challenges.<br>30 days can change everything.</p>
+      </div>
+      <button class="btn btn-full" style="font-size:15px;padding:13px" onclick="openNewChallenge()">Start a Challenge</button>`;
+    } else {
+      active.forEach(ch => {
+        const startDate = new Date(ch.startDate+'T12:00:00');
+        const dayNum = Math.floor((todayDate - startDate) / 86400000);
+        const doneDays = Object.values(ch.days||{}).filter(Boolean).length;
+        const streak = calcChallengeStreak(ch.days||{}, ch.startDate);
+        const todayDone = !!(ch.days?.[today]);
+        const daysLeft = Math.max(0, 29 - dayNum);
+        const inProgress = dayNum >= 0 && dayNum < 30;
+
+        html += `<div class="card" style="margin-bottom:2px">
+          <div class="flex-between" style="margin-bottom:8px">
+            <div style="font-family:var(--font-d);font-size:16px;font-style:italic;color:var(--text)">${ch.name}</div>
+            <button class="icon-btn" onclick="endChallenge('${ch.id}')" style="font-size:12px;color:var(--text3)" title="End challenge">✕</button>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:10px">
+            ${[['🔥',streak,'Streak'],['✅',doneDays,'Done'],['📅',inProgress?daysLeft:'—','Left']].map(([e,n,l])=>`
+              <div style="text-align:center;background:var(--bg3);border-radius:10px;padding:8px 4px;border:1px solid var(--border2)">
+                <div style="font-size:16px">${e}</div>
+                <div style="font-family:var(--font-d);font-size:16px;color:var(--teal);line-height:1.1">${n}</div>
+                <div style="font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-top:1px">${l}</div>
+              </div>`).join('')}
+          </div>
+          <div class="prog-bar" style="height:5px;margin-bottom:10px"><div class="prog-fill" style="width:${Math.round(doneDays/30*100)}%"></div></div>
+          ${inProgress ? (todayDone
+            ? `<div style="text-align:center;padding:10px;font-family:var(--font-d);font-size:14px;font-style:italic;color:var(--teal);background:var(--bg3);border-radius:10px">✓ Day ${dayNum+1} done 🖤${streak>=3?' · 🔥 '+streak+' streak':''}</div>`
+            : `<button class="btn btn-full" style="font-size:15px;padding:12px" onclick="quickCheckChallenge('${ch.id}')">✓ Mark Day ${dayNum+1} done</button>`) : ''}
+          <div class="challenge-grid" style="margin-top:10px">`;
+
+        for (let i = 0; i < 30; i++) {
+          const d = new Date(startDate); d.setDate(d.getDate()+i);
+          const ds = d.toISOString().slice(0,10);
+          const isFuture = d > todayDate;
+          const isDone = ch.days?.[ds];
+          const isToday = ds === today;
+          html += `<div class="day-cell ${isDone?'done':''} ${isToday&&!isDone?'today-cell':''} ${isFuture?'future':''}"
+            onclick="${isFuture?'':` toggleChallengeDay('${ch.id}','${ds}')`}" title="Day ${i+1}">${isDone?'✓':i+1}</div>`;
+        }
+        html += `</div>`;
+        if (ch.description) html += `<div class="note-text" style="font-size:12px;margin-top:10px;padding-top:10px;border-top:1px solid var(--border2)">${ch.description}</div>`;
+        html += `</div>`;
+      });
+    }
+  }
+
+  html += `</div>`;
+  el.innerHTML = html;
+}
+
+function set30View(v) { document.getElementById('tab-30day').dataset.view = v; render30Day(); }
+
+function calcChallengeStreak(days, startDate) {
+  let streak = 0, d = new Date(todayStr()+'T12:00:00');
+  while (streak <= 30) {
+    if (days[d.toISOString().slice(0,10)]) { streak++; d.setDate(d.getDate()-1); }
+    else break;
+  }
+  return streak;
+}
+
+function calcBestStreak(days, startDate) {
+  if (!startDate) return 0;
+  let best = 0, cur = 0;
+  const start = new Date(startDate+'T12:00:00');
+  for (let i = 0; i < 30; i++) {
+    const d = new Date(start); d.setDate(d.getDate()+i);
+    const ds = d.toISOString().slice(0,10);
+    if (days[ds]) { cur++; best = Math.max(best, cur); } else { cur = 0; }
+  }
+  return best;
+}
+
+function toggleChallengeDay(id, ds) {
+  if (!state.challenges[id]) return;
+  state.challenges[id].days = state.challenges[id].days || {};
+  state.challenges[id].days[ds] = !state.challenges[id].days[ds];
+  DB.set('challenges', state.challenges);
+  render30Day(); renderToday();
+  if (state.challenges[id].days[ds]) toast('Day marked ✦');
+}
+
+function openNewChallenge() {
+  openModal(`<div class="modal-title">New 30-Day Challenge</div>
+    <div class="form-row"><label class="form-label">What is your challenge? *</label>
+      <input id="ch-name" placeholder="e.g. Daily journaling, No sugar, Walk 20 min..."/></div>
+    <div class="form-row"><label class="form-label">Why are you doing this?</label>
+      <textarea id="ch-desc" rows="3" placeholder="The reason that will keep you going on day 14..."></textarea></div>
+    <div class="form-row"><label class="form-label">Start date</label>
+      <input id="ch-start" type="date" value="${todayStr()}"/></div>
+    <button class="btn btn-full" style="margin-top:8px;font-size:15px;padding:13px" onclick="startChallenge()">Begin — I commit to this 🔥</button>
+  `);
+}
+
+function startChallenge() {
+  const name = document.getElementById('ch-name').value.trim();
+  if (!name) { toast('Please name your challenge ✦'); return; }
+  const id = Date.now()+'';
+  const ch = { id, name, description: document.getElementById('ch-desc').value.trim(), startDate: document.getElementById('ch-start').value, days: {} };
+  state.challenges[id] = ch;
+  state.activeChallenges = [...(state.activeChallenges||[]), id];
+  DB.set('challenges', state.challenges);
+  DB.set('activeChallenges', state.activeChallenges);
+  closeModal(); render30Day(); renderToday(); toast('Challenge started! You\'ve got this 🔥');
+}
+
+function endChallenge(id) {
+  confirmDelete('End this challenge? Your progress is saved in History.', () => {
+    state.activeChallenges = (state.activeChallenges||[]).filter(x => x !== id);
+    DB.set('activeChallenges', state.activeChallenges);
+    render30Day(); renderToday(); toast('Challenge ended — saved to history ✦');
+  });
+}
+
+function restartChallenge(id) {
+  const old = state.challenges[id];
+  if (!old) return;
+  closeModal();
+  openModal(`<div class="modal-title">Run again: ${old.name}</div>
+    <div class="form-row"><label class="form-label">Start date</label>
+      <input id="ch-restart-start" type="date" value="${todayStr()}"/></div>
+    <p style="font-size:13px;color:var(--text2);margin-bottom:16px;line-height:1.6;font-style:italic;font-family:var(--font-d)">A new attempt will be created — your previous history is kept.</p>
+    <button class="btn btn-full" style="font-size:15px;padding:13px" onclick="confirmRestartChallenge('${id}')">Start fresh 🔥</button>
+  `);
+}
+
+function confirmRestartChallenge(oldId) {
+  const old = state.challenges[oldId];
+  if (!old) return;
+  const newId = Date.now()+'';
+  const newCh = { id: newId, name: old.name, description: old.description, startDate: document.getElementById('ch-restart-start').value, days: {} };
+  state.challenges[newId] = newCh;
+  state.activeChallenges = [...(state.activeChallenges||[]), newId];
+  DB.set('challenges', state.challenges);
+  DB.set('activeChallenges', state.activeChallenges);
+  closeModal(); document.getElementById('tab-30day').dataset.view = 'active'; render30Day(); renderToday(); toast('New run started! 🔥');
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// MANIFESTATION
+// ══════════════════════════════════════════════════════════════════════════════
+const MANIFEST_CATS = ['Love','Career','Abundance','Health','Travel','Growth','Home','Creativity'];
+const MANIFEST_CAT_COLORS = {
+  Love:'#e07a8a', Career:'#c8a0b8', Abundance:'#d4908a', Health:'#c090a8',
+  Travel:'#b890c8', Growth:'#d4a0b0', Home:'#c47888', Creativity:'#d090b8'
+};
+
+function renderManifest() {
+  const el = document.getElementById('tab-manifest');
+  const filter = el.dataset.filter || 'all';
+  let list = state.manifest;
+  if (filter !== 'all') list = list.filter(m => m.category === filter);
+  const today = todayStr();
+  const alreadyVisualized = state.manifest.some(m => m.lastVisualized === today);
+
+  let html = `<div class="col">
+    <div class="flex-between">
+      <div style="font-family:var(--font-d);font-size:20px;font-style:italic;color:var(--text)">Manifestation</div>
+      <button class="btn btn-sm" onclick="openAddManifest()">+ Add</button>
+    </div>`;
+
+  if (list.length > 0) {
+    html += `<div class="card" style="text-align:center;padding:14px;${alreadyVisualized?'border-color:var(--rose);':''}">
+      <div style="font-size:11px;color:var(--text3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px">Daily visualisation</div>
+      ${alreadyVisualized
+        ? `<div style="font-family:var(--font-d);font-size:14px;font-style:italic;color:var(--teal)">✓ Visualised today 🌙</div>
+           <div style="font-size:11px;color:var(--text3);margin-top:4px">${state.manifest.reduce((a,m)=>a+(m.visualized||0),0)} total sessions</div>`
+        : `<button class="btn btn-full" style="font-size:14px;padding:12px" onclick="markVisualized()">✨ I visualised today</button>`}
+    </div>`;
+  }
+
+  html += `<div style="overflow-x:auto;padding-bottom:4px">
+    <div style="display:flex;gap:6px;width:max-content">
+      <button class="pill ${filter==='all'?'active':''}" onclick="setManifestFilter('all')">All</button>
+      ${MANIFEST_CATS.map(c=>`<button class="pill ${filter===c?'active':''}" onclick="setManifestFilter('${c}')">${c}</button>`).join('')}
+    </div>
+  </div>`;
+
+  if (list.length === 0) {
+    html += `<div class="empty"><div class="empty-icon">🌙</div>
+      <p>Your desires live here.<br>Write them into existence.</p></div>`;
+  } else {
+    list.forEach(m => {
+      const catColor = MANIFEST_CAT_COLORS[m.category]||'var(--red2)';
+      html += `<div class="manifest-card" style="position:relative">
+        <div style="position:absolute;top:12px;right:12px;display:flex;gap:6px">
+          <button class="icon-btn" onclick="editManifest('${m.id}')">✏️</button>
+          <button class="icon-btn" onclick="deleteManifest('${m.id}')" style="color:var(--rose)">🗑️</button>
+        </div>
+        <div class="manifest-text">${m.affirmation}</div>
+        <div class="flex-between mt4" style="flex-wrap:wrap;gap:4px">
+          <span style="font-size:11px;color:${catColor};text-transform:uppercase;letter-spacing:.06em">${m.category}</span>
+          <div style="display:flex;gap:8px;align-items:center">
+            ${m.when ? `<span style="font-size:11px;color:var(--text3)">By ${m.when}</span>` : ''}
+            ${m.visualized ? `<span style="font-size:11px;color:var(--text3)">✨ ${m.visualized}×</span>` : ''}
+          </div>
+        </div>
+        ${m.feel ? `<div class="note-text" style="font-size:12px;margin-top:8px;padding-top:8px;border-top:1px solid var(--border2)">${m.feel}</div>` : ''}
+      </div>`;
+    });
+  }
+
+  html += `</div>`;
+  el.innerHTML = html;
+}
+
+function setManifestFilter(f) {
+  document.getElementById('tab-manifest').dataset.filter = f;
+  renderManifest();
+}
+
+function markVisualized() {
+  const today = todayStr();
+  state.manifest = state.manifest.map(m => ({...m, visualized: (m.visualized||0)+1, lastVisualized: today}));
+  DB.set('manifest', state.manifest);
+  renderManifest(); renderToday(); toast('Visualised 🌙 Believe it ✦');
+}
+
+function openAddManifest() { openModal(`<div class="modal-title">New Manifestation</div>${manifestForm()}`); }
+
+function manifestForm(m={}) {
+  return `
+    <div class="form-row"><label class="form-label">Affirmation / Desire *</label>
+      <textarea id="m-text" rows="3" placeholder="Write in present tense: I am, I have, I attract...">${m.affirmation||''}</textarea></div>
+    <div class="form-row"><label class="form-label">Category</label>
+      <div class="pill-wrap">${MANIFEST_CATS.map(c=>`<button class="pill ${(m.category||'Growth')===c?'active':''}" onclick="this.closest('.pill-wrap').querySelectorAll('.pill').forEach(b=>b.classList.remove('active'));this.classList.add('active')">${c}</button>`).join('')}</div>
+    </div>
+    <div class="form-row"><label class="form-label">By when?</label>
+      <input id="m-when" value="${m.when||''}" placeholder="e.g. End of year, Before my birthday..."/></div>
+    <div class="form-row"><label class="form-label">How it feels when it arrives</label>
+      <textarea id="m-feel" rows="2" placeholder="Warm, free, proud, peaceful...">${m.feel||''}</textarea></div>
+    <button class="btn btn-full" style="margin-top:8px" onclick="saveManifest(${m.id?`'${m.id}'`:'null'})">Save</button>
+  `;
+}
+
+function saveManifest(editId) {
+  const text = document.getElementById('m-text').value.trim();
+  if (!text) { toast('Please write your affirmation ✦'); return; }
+  const cat = document.querySelector('#modal-content .pill-wrap .pill.active')?.textContent || 'Growth';
+  const m = {
+    id: editId || Date.now()+'', affirmation: text, category: cat,
+    when: document.getElementById('m-when').value.trim(),
+    feel: document.getElementById('m-feel').value.trim(),
+    visualized: editId ? (state.manifest.find(x=>x.id===editId)?.visualized||0) : 0,
+    lastVisualized: editId ? (state.manifest.find(x=>x.id===editId)?.lastVisualized||'') : '',
+  };
+  if (editId) state.manifest = state.manifest.map(x=>x.id===editId?m:x);
+  else state.manifest.unshift(m);
+  DB.set('manifest', state.manifest);
+  closeModal(); renderManifest(); toast(editId?'Updated ✦':'Manifestation written ✦');
+}
+
+function editManifest(id) {
+  const m = state.manifest.find(x=>x.id===id);
+  if (!m) return;
+  openModal(`<div class="modal-title">Edit</div>${manifestForm(m)}`);
+}
+
+function deleteManifest(id) {
+  confirmDelete('This manifestation will be removed.', () => {
+    state.manifest = state.manifest.filter(m=>m.id!==id);
+    DB.set('manifest', state.manifest); renderManifest(); toast('Removed ✦');
+  });
+}
+
+// ══════════════════════════════════════════════════════════════════════════════
+// SETTINGS
+// ══════════════════════════════════════════════════════════════════════════════
+const ALL_KEYS = ['goals','challenges','manifest','activeChallenges'];
+
+function renderSettings() {
+  const goalsCount      = (state.goals||[]).filter(g=>!g.archived).length;
+  const archivedCount   = (state.goals||[]).filter(g=>g.archived).length;
+  const challengeCount  = Object.keys(state.challenges||{}).length;
+  const activeCount     = (state.activeChallenges||[]).length;
+  const manifestCount   = (state.manifest||[]).length;
+
+  let storageKB = 0;
+  try {
+    for (let i = 0; i < localStorage.length; i++) {
+      const key = localStorage.key(i);
+      if (key && key.startsWith('nl_')) storageKB += (localStorage.getItem(key)||'').length;
+    }
+    storageKB = Math.round(storageKB / 1024);
+  } catch {}
+  const storagePct = Math.min(100, Math.round(storageKB / 5120 * 100));
+  const storageColor = storagePct > 80 ? '#c04040' : storagePct > 60 ? '#c07820' : 'var(--teal)';
+
+  document.getElementById('tab-settings').innerHTML = `<div class="col">
+    <div style="font-family:var(--font-d);font-size:20px;font-style:italic;color:var(--teal)">Settings</div>
+
+    <div class="card">
+      <div class="card-title">🌿 Your data</div>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px">
+        ${[['🎯','Goals',goalsCount+(archivedCount?` (+${archivedCount})`:''  )],
+           ['🔥','Challenges',challengeCount+' ('+activeCount+' active)'],
+           ['✨','Manifest',manifestCount]
+          ].map(([icon,label,n])=>`
+          <div style="text-align:center;background:var(--bg3);border-radius:12px;padding:10px 4px;border:1px solid var(--border2)">
+            <div style="font-size:18px">${icon}</div>
+            <div style="font-family:var(--font-d);font-size:15px;color:var(--teal);line-height:1.3;margin-top:2px">${n}</div>
+            <div style="font-size:9px;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-top:2px">${label}</div>
+          </div>`).join('')}
+      </div>
+      ${storageKB > 0 ? `<div>
+        <div class="flex-between" style="margin-bottom:5px">
+          <span style="font-size:11px;color:var(--text2)">Storage used</span>
+          <span style="font-size:11px;color:${storageColor};font-weight:600">${storageKB} KB / ~5 MB ${storagePct>80?'⚠️':''}</span>
+        </div>
+        <div style="height:5px;background:var(--bg3);border-radius:99px;overflow:hidden">
+          <div style="height:100%;width:${storagePct}%;background:${storageColor};border-radius:99px"></div>
+        </div>
+        ${storagePct > 70 ? `<div style="font-size:11px;color:${storageColor};margin-top:6px;line-height:1.5">⚠️ Storage is ${storagePct>90?'nearly full':'getting full'}. Export a backup soon.</div>` : ''}
+      </div>` : ''}
+    </div>
+
+    <div class="card">
+      <div class="card-title">⬆️ Export</div>
+      <p style="font-size:13px;color:var(--text2);margin-bottom:14px;line-height:1.6">Download everything — goals, challenges, manifestations — as a backup file.</p>
+      <button class="btn btn-full" onclick="exportData()">Download backup</button>
+    </div>
+
+    <div class="card">
+      <div class="card-title">⬇️ Import</div>
+      <p style="font-size:13px;color:var(--text2);margin-bottom:14px;line-height:1.6">Restore from a backup. Merges with existing data — nothing gets overwritten.</p>
+      <label style="display:block;cursor:pointer">
+        <input type="file" accept=".json" id="import-file-input" style="display:none" onchange="importData(this)"/>
+        <div class="btn-outline btn-full" style="text-align:center;padding:9px">Choose backup file</div>
+      </label>
+      <div id="import-status" style="margin-top:8px;font-size:12px;color:var(--text3);font-style:italic;text-align:center;min-height:18px"></div>
+    </div>
+
+    <div class="card" style="border-color:rgba(192,48,64,0.18)">
+      <div class="card-title" style="color:#c04040">⚠️ Danger zone</div>
+      <p style="font-size:13px;color:var(--text2);margin-bottom:10px;line-height:1.6">Permanently delete data. Export a backup first!</p>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <button class="btn-outline btn-full" style="color:#c04040;border-color:rgba(192,48,64,0.3)" onclick="confirmResetSection('goals','Goals')">Reset goals only</button>
+        <button class="btn-outline btn-full" style="color:#c04040;border-color:rgba(192,48,64,0.3)" onclick="confirmResetSection('challenges','Challenges')">Reset challenges only</button>
+        <button class="btn-outline btn-full" style="color:#c04040;border-color:rgba(192,48,64,0.3)" onclick="confirmResetSection('manifest','Manifestations')">Reset manifestations only</button>
+        <button class="btn btn-full" style="background:#c04040;margin-top:4px" onclick="confirmResetAll()">Reset everything</button>
+      </div>
+    </div>
+
+    <div style="text-align:center;padding:12px 0 4px">
+      <div style="font-family:var(--font-d);font-size:13px;font-style:italic;color:var(--text3)">✦ Nessie's Life</div>
+    </div>
+  </div>`;
+}
+
+function exportData() {
+  const backup = {
+    _version: 1,
+    _exported: new Date().toISOString(),
+    goals:            state.goals || [],
+    challenges:       state.challenges || {},
+    activeChallenges: state.activeChallenges || [],
+    manifest:         state.manifest || [],
+  };
+  const blob = new Blob([JSON.stringify(backup, null, 2)], {type:'application/json'});
+  const url  = URL.createObjectURL(blob);
+  const a    = document.createElement('a');
+  a.href = url; a.download = `nessies-life-backup-${todayStr()}.json`;
+  a.click(); URL.revokeObjectURL(url);
+  toast('Backup downloaded ✦');
+}
+
+async function importData(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const status = document.getElementById('import-status');
+  try {
+    const data = JSON.parse(await file.text());
+    let added = 0;
+
+    if (Array.isArray(data.goals)) {
+      const existing = new Set((state.goals||[]).map(g=>g.id));
+      const newOnes = data.goals.filter(g=>!existing.has(g.id));
+      state.goals = [...(state.goals||[]), ...newOnes];
+      added += newOnes.length;
+      await DB.set('goals', state.goals);
+    }
+    if (data.challenges && typeof data.challenges === 'object') {
+      const existing = new Set(Object.keys(state.challenges||{}));
+      let newChs = 0;
+      for (const [id, ch] of Object.entries(data.challenges)) {
+        if (!existing.has(id)) { state.challenges[id] = ch; newChs++; }
+      }
+      added += newChs;
+      await DB.set('challenges', state.challenges);
+    }
+    if (Array.isArray(data.manifest)) {
+      const existing = new Set((state.manifest||[]).map(m=>m.id));
+      const newOnes = data.manifest.filter(m=>!existing.has(m.id));
+      state.manifest = [...(state.manifest||[]), ...newOnes];
+      added += newOnes.length;
+      await DB.set('manifest', state.manifest);
+    }
+
+    renderAll(); renderSettings();
+    status.style.color = 'var(--red2)';
+    status.textContent = `✦ Imported ${added} new item${added!==1?'s':''} successfully`;
+    input.value = '';
+    toast(`Imported ${added} items ✦`);
+  } catch(err) {
+    status.style.color = '#c04040';
+    status.textContent = 'Could not read file — make sure it\'s a valid backup.';
+  }
+}
+
+function confirmResetSection(key, label) {
+  confirmDelete(`All your ${label.toLowerCase()} will be permanently deleted.`, async () => {
+    if (key === 'challenges') {
+      state.challenges = {}; state.activeChallenges = [];
+      await DB.set('challenges', {}); await DB.set('activeChallenges', []);
+    } else {
+      state[key] = [];
+      await DB.set(key, []);
+    }
+    renderAll(); renderSettings(); toast(`${label} cleared ✦`);
+  });
+}
+
+function confirmResetAll() {
+  _pendingDelete = async () => {
+    state.goals = []; state.challenges = {}; state.activeChallenges = []; state.manifest = [];
+    for (const k of ALL_KEYS) await DB.set(k, k === 'challenges' ? {} : []);
+    renderAll(); renderSettings(); toast('All data cleared ✦');
+  };
+  openModal(`<div style="text-align:center;padding:8px 0 4px">
+    <div style="font-size:32px;margin-bottom:12px">⚠️</div>
+    <div style="font-family:var(--font-d);font-size:17px;font-style:italic;color:var(--teal);margin-bottom:8px">Delete everything?</div>
+    <div style="font-size:13px;color:var(--text2);margin-bottom:6px;line-height:1.6">Goals, challenges, and manifestations will all be permanently deleted.</div>
+    <div style="font-size:12px;color:var(--text3);margin-bottom:24px;font-style:italic;font-family:var(--font-d)">Export a backup first if you're not sure.</div>
+    <div style="display:flex;gap:10px">
+      <button class="btn-outline btn-full" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-full" style="background:var(--rose)" onclick="executePendingDelete()">Yes, delete all</button>
+    </div>
+  </div>`);
+}
+
+function renderAll() { renderToday(); renderGoals(); render30Day(); renderManifest(); renderSettings(); }
+
+init();
+</script>
+</body>
+</html>
